@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push product-service
+        run: |
+          cd product-service
+          mvn clean package -DskipTests
+          docker build -t mahmoudalnahal/product-service:latest .
+          docker push mahmoudalnahal/product-service:latest
+
+      - name: Build and push order-service
+        run: |
+          cd order-service
+          mvn clean package -DskipTests
+          docker build -t mahmoudalnahal/order-service:latest .
+          docker push mahmoudalnahal/order-service:latest
+
+      - name: Build and push user-service
+        run: |
+          cd user-service
+          mvn clean package -DskipTests
+          docker build -t mahmoudalnahal/user-service:latest .
+          docker push mahmoudalnahal/user-service:latest
