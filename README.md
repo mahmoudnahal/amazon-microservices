@@ -39,3 +39,7 @@ Each service runs on its own port and communicates with other services directly 
 
 - [ ] Implement Saga Pattern for distributed transaction management across services
 - [ ] Add API Gateway for unified request routing
+
+## 👤 Author
+
+Developed by [Mahmoud Al-Nahal](https://github.com/mahmoudnahal) as part of an Advanced Software Engineering project.
